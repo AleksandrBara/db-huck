@@ -24,6 +24,7 @@ COMMENDATIONS = [
         'Теперь у тебя точно все получится!',
     ]
 
+
 def find_schoolkid(schoolkid_name):
     try:
         return Schoolkid.objects.get(full_name=schoolkid_name)
@@ -40,8 +41,8 @@ def fix_marks(schoolkid):
 
 
 def delete_chastisement(schoolkid):
-    chastisement = Chastisement.objects.filter(schoolkid=schoolkid[0])
-    chastisement.delete()
+    chastisements = Chastisement.objects.filter(schoolkid=schoolkid)
+    chastisements.delete()
 
 
 def create_commendation(subject, schoolkid):
