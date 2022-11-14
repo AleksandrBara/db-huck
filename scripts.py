@@ -30,6 +30,8 @@ def find_schoolkid(schoolkid_name):
     except Schoolkid.DoesNotExist:
         print('Студента {} не существует'.format(schoolkid_name))
         print('Формат ввода: Фамилия-Имя-Отчество!')
+    except Schoolkid.MultipleObjectsReturned:
+        print('Найдено более одного ученика. Проверьте ФИО!')
 
 
 def fix_marks(schoolkid):
@@ -46,10 +48,12 @@ def create_commendation(subject, schoolkid):
     year_of_study, group_letter = 6, "А"
     commendation = random.choice(COMMENDATIONS)
     lessons = Lesson.objects.filter(
-        year_of_study__in=[year_of_study],
+        year_of_study=year_of_study,
         group_letter=group_letter,
         subject__title=subject,
-    )
+    ).order_by('subject')
+    if not lessons.exists():
+        exit('Предмет не найден!!!')
     lesson = random.choice(lessons)
     Commendation.objects.create(
         schoolkid=schoolkid,
